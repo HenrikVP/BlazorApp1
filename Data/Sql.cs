@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data;
+using System.Data.SqlClient;
 
 namespace BlazorApp1.Data
 {
@@ -23,6 +24,20 @@ namespace BlazorApp1.Data
 
             return list;
         }
+
+        public void Create(Meme meme) 
+        {
+            using (SqlConnection conn = new(connectionString))
+            {
+                SqlCommand cmd = new($"INSERT INTO MemeTable (MemeName, Url) VALUES (@memeName, @memeUrl)", conn);
+                cmd.Parameters.Add("@memeName", SqlDbType.NVarChar).Value = meme.MemeName;
+                cmd.Parameters.Add("@memeUrl", SqlDbType.NVarChar).Value = meme.Url;
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
     }
 }
 
