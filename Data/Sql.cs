@@ -5,7 +5,7 @@ namespace BlazorApp1.Data
 {
     public class Sql
     {
-        static string connectionString = "Data Source=.;Initial Catalog = MemeDB; User ID = sa; Password=Passw0rd;";
+        static string connectionString = "Data Source= .;Initial Catalog = MemeDB; User ID = sa; Password=Passw0rd;";
 
         public static List<Meme> Read()
         {
