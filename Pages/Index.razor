@@ -21,6 +21,8 @@ else
                 <th>Id</th>
                 <th>Name</th>
                 <th>URL</th>
+                <th>Image</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -29,7 +31,9 @@ else
                 <tr>
                     <td>@meme.Id</td>
                     <td>@meme.MemeName</td>
-                    <td>@meme.Url</td>
+                    <td><p style="width: 200px">@meme.Url</p></td>
+                    <td><img style="width: 300px; height: auto"src=@meme.Url/></td>
+                    <td><button @onclick="() => DeleteFromSql(meme.Id)">Delete</button></td>
                 </tr>
             }
 
@@ -37,7 +41,7 @@ else
                 <td><button @onclick="AddToSql">Add</button></td>
                 <td><input @bind = "meme.MemeName"/></td>
                 <td><input @bind = "meme.Url"/></td>
-
+                    <td></td>
             </tr>
         </tbody>
     </table>
@@ -46,9 +50,17 @@ else
 <SurveyPrompt Title="How is Blazor working for you?" />
 
 @code {
-    Sql sql = new();
     Meme meme = new();
-    List<Meme> memeList = new();
-    void ReadFromSql() { memeList = sql.Read(); }
-    void AddToSql(){ sql.Create(meme); }
+    List<Meme> memeList = Sql.Read();
+    void ReadFromSql() { memeList = Sql.Read(); }
+    void AddToSql()
+    { 
+        Sql.Create(meme);
+        memeList = Sql.Read();
+    }
+    void DeleteFromSql(int id)
+    {
+        Sql.Delete(id);
+        memeList = Sql.Read();
+    }
 }

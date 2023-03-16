@@ -5,9 +5,9 @@ namespace BlazorApp1.Data
 {
     public class Sql
     {
-        string connectionString = "Data Source=192.168.2.3;Initial Catalog = MemeDB; User ID = sa; Password=Passw0rd;";
+        static string connectionString = "Data Source=.;Initial Catalog = MemeDB; User ID = sa; Password=Passw0rd;";
 
-        public List<Meme> Read()
+        public static List<Meme> Read()
         {
             List<Meme> list = new List<Meme>();
             SqlConnection con = new(connectionString);
@@ -25,13 +25,25 @@ namespace BlazorApp1.Data
             return list;
         }
 
-        public void Create(Meme meme) 
+        public static void Create(Meme meme) 
         {
             using (SqlConnection conn = new(connectionString))
             {
-                SqlCommand cmd = new($"INSERT INTO MemeTable (MemeName, Url) VALUES (@memeName, @memeUrl)", conn);
+                SqlCommand cmd = new("INSERT INTO MemeTable (MemeName, Url) VALUES (@memeName, @memeUrl)", conn);
                 cmd.Parameters.Add("@memeName", SqlDbType.NVarChar).Value = meme.MemeName;
                 cmd.Parameters.Add("@memeUrl", SqlDbType.NVarChar).Value = meme.Url;
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
+        public static void Delete(int id)
+        {
+            using (SqlConnection conn = new(connectionString))
+            {
+                SqlCommand cmd = new("DELETE FROM MemeTable WHERE Id = @id", conn);
+                cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
                 conn.Open();
                 cmd.ExecuteNonQuery();
                 conn.Close();
