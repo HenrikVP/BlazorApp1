@@ -11,6 +11,13 @@ builder.Services.AddSingleton<WeatherForecastService>();
 
 var app = builder.Build();
 
+var cbuilder = new ConfigurationBuilder()
+                       .SetBasePath(Directory.GetCurrentDirectory())
+                       .AddJsonFile("appSettings.json", optional: true, reloadOnChange: true);
+IConfiguration _configuration = cbuilder.Build();
+
+Sql.connectionString = _configuration.GetConnectionString("home");
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

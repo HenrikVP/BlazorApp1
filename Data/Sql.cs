@@ -1,11 +1,13 @@
-﻿using System.Data;
+﻿using Microsoft.Extensions.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace BlazorApp1.Data
 {
     public class Sql
     {
-        static string connectionString = "Data Source= .;Initial Catalog = MemeDB; User ID = sa; Password=Passw0rd;";
+        //string myDb1ConnectionString = _configuration.GetConnectionString("myDb1");
+        public static string connectionString;// = "Data Source= .;Initial Catalog = MemeDB; User ID = sa; Password=Passw0rd;";
 
         public static List<Meme> Read()
         {
